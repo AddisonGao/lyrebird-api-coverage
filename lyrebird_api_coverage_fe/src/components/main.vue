@@ -52,7 +52,7 @@ module.exports = {
   },
   methods: {
     loadCoverageData: function() {
-      this.$http.get("/ui/plugin/api_coverage/getCoverage").then(
+      this.$http.get("/api_coverage/getCoverage").then(
         response => {
           this.coverageData = response.data;
         },
@@ -62,7 +62,7 @@ module.exports = {
       );
     },
     loadDetailData: function() {
-      this.$http.get("/ui/plugin/api_coverage/getTest").then(
+      this.$http.get("/plugin/api_coverage/getTest").then(
         response => {
           this.detailData = response.data.test_data;
           // 总的数据赋值给show，搜索用的数据
@@ -89,12 +89,12 @@ module.exports = {
     }
   },
   components: {
-    coverage: httpVueLoader("/ui/plugin/api_coverage/static/component/coverage.vue"),
+    coverage: httpVueLoader("/plugin/api_coverage/static/component/coverage.vue"),
     "api-list": httpVueLoader(
-      "/ui/plugin/api_coverage/static/component/api-list.vue"
+      "/plugin/api_coverage/static/component/api-list.vue"
     ),
-    banner: httpVueLoader("/ui/plugin/api_coverage/static/component/banner.vue"),
-    info: httpVueLoader("/ui/plugin/api_coverage/static/component/info.vue")
+    banner: httpVueLoader("/plugin/api_coverage/static/component/banner.vue"),
+    info: httpVueLoader("/plugin/api_coverage/static/component/info.vue")
   }
 };
 </script>

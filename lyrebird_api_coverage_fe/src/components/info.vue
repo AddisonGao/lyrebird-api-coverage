@@ -18,7 +18,7 @@ module.exports = {
   },
   methods: {
     loadBaseInfo: function() {
-      this.$http.get("/ui/plugin/api_coverage/baseInfo").then(function(data) {
+      this.$http.get("/plugin/api_coverage/baseInfo").then(function(data) {
         console.log(data.data);
         this.info = data.data;
       });

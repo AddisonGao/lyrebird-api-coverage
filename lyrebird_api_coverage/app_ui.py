@@ -15,12 +15,12 @@ from lyrebird_api_coverage.handlers.result_handler import ResultHandler, PLUGINS
 from lyrebird import context
 
 
-class AppUI(lyrebird.PluginView):
-    def index(self):
-        """
-        插件首页
-        """
-        return self.render_template('index.html')
+class AppUI(lyrebird.Plugin):
+    # def index(self):
+    #     """
+    #     插件首页
+    #     """
+    #     return self.render_template('index.html')
 
     def get_coverage_data(self):
         # 获取app_context里面缓存的测试数据
@@ -130,11 +130,11 @@ class AppUI(lyrebird.PluginView):
 
     def on_create(self):
         # 设置模板目录（可选，设置模板文件目录。默认值templates）
-        self.set_template_root('lyrebird_api_coverage')
+        # self.set_template_root('lyrebird_api_coverage')
         # 设置静态文件目录（可选，设置静态文件目录。默认值static）
-        self.set_static_root('lyrebird_api_coverage')
+        self.set_static_root(package_name='lyrebird_api_coverage', static_path='dist')
         # 设置跟路径（必选，需要提供跟路径用于显示插件首页的内容）
-        self.add_url_rule('/', view_func=self.index)
+        # self.add_url_rule('/', view_func=self.index)
 
         # 总线消息订阅
         event_subscribe()
@@ -163,8 +163,8 @@ class AppUI(lyrebird.PluginView):
         # base info
         self.add_url_rule('/baseInfo', view_func=self.get_base_info)
 
-    def get_icon(self):
-        return 'fa fa-fw fa-lightbulb-o'
+    # def get_icon(self):
+    #     return 'fa fa-fw fa-lightbulb-o'
 
-    def get_title(self):
-        return 'APICoverage'
+    # def get_title(self):
+    #     return 'APICoverage'

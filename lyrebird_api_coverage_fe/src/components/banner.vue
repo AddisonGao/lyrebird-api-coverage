@@ -72,7 +72,7 @@ module.exports = {
         let upLoadFile = new FormData();
         upLoadFile.append("json-import", $("#load-file")[0].files[0]);
         this.$http
-          .post("/ui/plugin/api_coverage/importBase", upLoadFile)
+          .post("/plugin/api_coverage/importBase", upLoadFile)
           .then(function(data) {
             console.log(data.data);
             if (data.data.code == 1000) {
@@ -92,7 +92,7 @@ module.exports = {
       file.outerHTML = file.outerHTML;
     },
     clearTest: function() {
-      this.$http.get("/ui/plugin/api_coverage/clearResult").then(function(data) {
+      this.$http.get("/plugin/api_coverage/clearResult").then(function(data) {
         console.log(data.data);
         if (data.data.code == 1000) {
           this.$Notice.open({ title: "Clear test success!" });
@@ -112,7 +112,7 @@ module.exports = {
         let upLoadFile = new FormData();
         upLoadFile.append("json-import", $("#resume-file")[0].files[0]);
         this.$http
-          .post("/ui/plugin/api_coverage/resumeTest", upLoadFile)
+          .post("/plugin/api_coverage/resumeTest", upLoadFile)
           .then(function(data) {
             console.log(data.data);
             if (data.data.code == 1000) {
@@ -136,7 +136,7 @@ module.exports = {
       data.append("result_name", this.newResultName);
       let name = this.newResultName;
       if (name) {
-        this.$http.post("/ui/plugin/api_coverage/saveResult", data).then(response => {
+        this.$http.post("/plugin/api_coverage/saveResult", data).then(response => {
           console.log("Create result success");
           this.$Notice.open({ title: "Create result success!" });
           this.newResultName = null;
@@ -151,7 +151,7 @@ module.exports = {
     },
     filterShow: function() {
       this.showFilterModal = true;
-      this.$http.get("/ui/plugin/api_coverage/getFilterConf").then(function(data) {
+      this.$http.get("/plugin/api_coverage/getFilterConf").then(function(data) {
         if (data.data.code == 3000) {
           this.$Notice.open({ title: data.data.message });
         } else {
@@ -165,7 +165,7 @@ module.exports = {
     editFilterOk: function() {
       let data = new FormData($("#filtering-rules-form")[0]);
       this.$http
-        .post("/ui/plugin/api_coverage/setFilterConf", data)
+        .post("/plugin/api_coverage/setFilterConf", data)
         .then(function(data) {
           if (data.data.code == 1000) {
             this.$Notice.open({ title: "Set filter success!" });

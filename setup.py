@@ -28,7 +28,7 @@ setup(
         'lyrebird_data_handler': [
             'api_coverage = lyrebird_api_coverage.proxy.proxy_handler:MyDataHandler'
         ],
-        'lyrebird_web': [
+        'lyrebird_plugin': [
             'api_coverage = lyrebird_api_coverage.app_ui:AppUI'
         ]
     },
