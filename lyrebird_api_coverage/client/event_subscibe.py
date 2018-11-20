@@ -7,14 +7,24 @@ import lyrebird
 from lyrebird_api_coverage.client.context import app_context
 
 
-def event_handler(event):
-    app_context.info = event.get('message')
+def android_handler(event):
+    for event_item in event:
+        # id 为设备唯一标识,上下文中若有重复的要进行移除重新添加
+        filter_list = list(filter(lambda x: x.get('id') == event_item.get('id'), app_context.info))
+        if filter_list:
+            app_context.info.remove(filter_list[0])
+        event_item['info']['platform'] = 'Android'
+        app_context.info.append(event_item)
 
-
-def user_handler(event):
-    app_context.user_info = event.get('message')
-
+def ios_handler(event):
+    for event_item in event:
+        # id为设备唯一标识,上下文中若有重复的要进行移除重新添加
+        filter_list = list(filter(lambda x: x.get('id') == event_item.get('id'), app_context.info))
+        if filter_list:
+            app_context.info.remove(filter_list[0])
+        event_item['info']['platform'] = 'iOS'
+        app_context.info.append(event_item)
 
 def event_subscribe():
-    lyrebird.subscribe('device_info', event_handler)
-    lyrebird.subscribe('user_info', user_handler)
+    lyrebird.subscribe('android.device', android_handler)
+    lyrebird.subscribe('ios.device', ios_handler)

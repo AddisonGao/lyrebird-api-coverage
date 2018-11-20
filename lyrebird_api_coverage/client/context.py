@@ -23,14 +23,12 @@ class Context:
         self.filename = ''
         # 过滤规则包含host和regular
         self.filter_dic = {}
-        # device & APP信息
-        self.info = {}
+        # device & APP信息 列表
+        self.info = []
         # 来自base文件的信息
         self.business = ''
         self.version_name = ''
         self.version_code = None
-        # user_info
-        self.user_info = {}
 
 
 # 单例模式
