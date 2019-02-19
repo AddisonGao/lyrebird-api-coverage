@@ -5,14 +5,13 @@
     </Row>
     <div class="divider"></div>
     <Row>
-      <Col span="7" >
+      <Col span="6" >
         <div class="info-bar">
-          <coverage :coveragedata ="coverageData" @newcoverage="loadCoverageData" class="coverage"></coverage>
-          <base-info></base-info>
+          <base-info :coveragedata ="coverageData" @newcoverage="loadCoverageData" class="coverage"></base-info>
         </div>
       </Col>
       <div class="split"></div>
-      <Col span="17">
+      <Col span="18">
         <APIList :detaildata ="showedAPIData"  @newbase="loadDetailData" class="apilist"></APIList>
       </Col>
     </Row>
@@ -23,7 +22,6 @@
 import Banner from '@/views/banner.vue'
 import APIList from '@/views/api-list.vue'
 import BaseInfo from '@/views/info.vue'
-import Coverage from '@/views/coverage.vue'
 import io from 'socket.io-client'
 import * as api from '@/api' 
 
@@ -36,8 +34,7 @@ export default {
   components: {
     Banner,
     APIList,
-    BaseInfo,
-    Coverage
+    BaseInfo
   },
   data: function () {
     return {

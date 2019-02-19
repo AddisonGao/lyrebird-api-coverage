@@ -16,11 +16,6 @@
           </Tooltip>
         </Upload>
 
-
-        <div class="inline">
-          <Divider type="vertical"></Divider>
-        </div>
-
         <Upload action="/ui/plugin/api_coverage/importBase"
         :on-success="handleSuccess"
         :on-error="handleError"
@@ -35,27 +30,17 @@
           </Tooltip>
         </Upload>
 
-        <div class="inline">
-            <Divider type="vertical"></Divider>
-        </div>
         
-        <Tooltip content="Clear">
+        <Tooltip content="Clear" class="api-button">
             <Button @click="clearTest" icon="md-refresh"></Button>
         </Tooltip>
         
-        <div class="inline">
-            <Divider type="vertical"></Divider>
-        </div>
 
-        <Tooltip content="Save Result">
+        <Tooltip content="Save Result" class="api-button">
           <Button @click="showCreateResultModal=true" icon="md-download"></Button>
         </Tooltip>
-        
-        <div class="inline">
-            <Divider type="vertical"></Divider>
-        </div>
 
-        <Tooltip content="Filtering Rules">
+        <Tooltip content="Filtering Rules" class="api-button">
             <Button @click="filterShow" icon="md-settings"></Button>
         </Tooltip>
 
@@ -198,6 +183,12 @@ export default {
   }
   .upload {
     width: 45px;
-    display: inline-block
+    display: inline-block;
+    margin-left: 3px;
+    margin-right: 3px;
+  }
+  .api-button {
+    margin-left: 5px;
+    margin-right: 5px;
   }
 </style>
