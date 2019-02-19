@@ -69,7 +69,7 @@ class AppUI(lyrebird.PluginView):
             return jsonify(msg)
 
     def set_filter_conf(self):
-        filter_data = request.form.get('filter_data')
+        filter_data = request.data
         try:
             resp = FilterHandler().save_filer_conf(json.loads(filter_data))
             lyrebird.publish('api_coverage', 'operation', name='set_filter')
