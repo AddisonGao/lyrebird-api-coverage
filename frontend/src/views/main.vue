@@ -5,14 +5,14 @@
     </Row>
     <div class="divider"></div>
     <Row>
-      <Col span="6" >
+      <Col span="7" >
         <div class="info-bar">
           <coverage :coveragedata ="coverageData" @newcoverage="loadCoverageData" class="coverage"></coverage>
           <base-info></base-info>
         </div>
       </Col>
       <div class="split"></div>
-      <Col span="18">
+      <Col span="17">
         <APIList :detaildata ="showedAPIData"  @newbase="loadDetailData" class="apilist"></APIList>
       </Col>
     </Row>
@@ -61,26 +61,20 @@ export default {
   },
   methods: {
     loadCoverageData: function() {
-      this.$http.get("/ui/plugin/api_coverage/getCoverage").then(
-        response => {
-          this.coverageData = response.data;
-        },
-        error => {
-          console.log("load coverage data failed!", error);
-        }
-      );
+      api.loadCoverage()
+      .then(response=> {
+        this.coverageData = response.data;
+      })
+      .catch(error=>console.log(error))
     },
     loadDetailData: function() {
-      this.$http.get("/ui/plugin/api_coverage/getTest").then(
-        response => {
-          this.detailData = response.data.test_data;
-          // 总的数据赋值给show，搜索用的数据
-          this.showedAPIData = this.detailData;
-        },
-        error => {
-          console.log("load detail data failed!", error);
-        }
-      );
+      api.loadAPIList()
+      .then(response=> {
+        this.detailData = response.data.test_data;
+        // 总的数据赋值给show，搜索用的数据
+        this.showedAPIData = this.detailData;
+      })
+      .catch(error=>console.log(error))
     },
     //搜索框
     findTargetContext: function(targetContext) {

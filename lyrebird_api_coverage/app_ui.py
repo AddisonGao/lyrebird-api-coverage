@@ -35,7 +35,7 @@ class AppUI(lyrebird.PluginView):
 
     def save_result(self):
         # 传入文件名
-        filename = request.form.get('result_name')
+        filename = json.loads(request.data).get('result_name')
         ResultHandler().save_result(filename)
         lyrebird.publish('api_coverage', 'operation', name='save_result')
         return context.make_ok_response()
@@ -69,9 +69,9 @@ class AppUI(lyrebird.PluginView):
             return jsonify(msg)
 
     def set_filter_conf(self):
-        filter_data = request.data
+        filter_data = json.loads(request.data.get('filters'))
         try:
-            resp = FilterHandler().save_filer_conf(json.loads(filter_data))
+            resp = FilterHandler().save_filer_conf(filter_data)
             lyrebird.publish('api_coverage', 'operation', name='set_filter')
         except Exception as e:
             lyrebird.publish('api_coverage', 'error', name='set_filter')

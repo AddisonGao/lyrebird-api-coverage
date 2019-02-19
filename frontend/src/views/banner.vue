@@ -61,21 +61,16 @@
 
         <modal v-model="showCreateResultModal" title="Save Result" :mask="false" @on-ok="createResultOk">
             <label>Path: ~/.lyrebird/plugins/lyrebird_api_coverage/data</label>
-            <i-input placeholder="Type file name,eg:travel_9.5_test_result" v-model="newResultName"/>
+            <Input placeholder="Type file name,eg:travel_9.5_test_result" v-model="newResultName"/>
         </modal>
 
         <modal v-model="showFilterModal" title="Edit Filtering Rules" @on-ok="editFilterOk" :mask="false" style="width:1000px">
           <Input :autosize="true" type="textarea" v-model="filterRules" placeholder="filtering rules json"/>
-          <!-- <form id="filtering-rules-form">
-            <div class="form-group">
-              <textarea id="filtering-rules-modal-data" class="form-control" placeholder="filtering rules json" style="height: 350px;" v-model="filterRules"></textarea>
-            </div>
-          </form> -->
         </modal>
 
       </Col>
       <Col span="4">
-        <Input v-model="targetContext" search enter-button="Search" placeholder="Enter something..." @on-enter="popTargetContext(targetContext)"/>
+        <Input v-model="targetContext" search @on-enter="popTargetContext(targetContext)"/>
       </Col>
   </Row>  
 </template>
@@ -90,7 +85,7 @@ export default {
       targetContext: null,
       showCreateResultModal: false,
       showFilterModal: false,
-      newResultName: "",
+      newResultName: null,
       filterRules: null
     }
   },
@@ -136,63 +131,55 @@ export default {
       this.$Notice.open({ title: "只能上传.json后缀的文件" })
     },
     clearTest: function() {
-      this.$http.get("/ui/plugin/api_coverage/clearResult").then(function(data) {
-        console.log(data.data);
-        if (data.data.code == 1000) {
-          this.$Notice.open({ title: "Clear test success!" });
-          this.$emit("newbase");
-          this.$emit("newcoverage");
-        } else {
-          this.$Notice.open({ title: "Clear test failed!" });
+      api.clearResult().then(
+        response=>{
+          if (response.data.code == 1000) {
+            this.$Notice.open({ title: "Clear test success!" });
+            this.$emit("newbase");
+            this.$emit("newcoverage");
+          } else {
+            this.$Notice.open({ title: "Clear test failed!" });
+          }
         }
-      });
+      ).catch(error=>console.log(error))
     },
     createResultOk: function() {
-      let data = new FormData();
-      data.append("result_name", this.newResultName);
       let name = this.newResultName;
       if (name) {
-        this.$http.post("/ui/plugin/api_coverage/saveResult", data).then(response => {
-          console.log("Create result success");
-          this.$Notice.open({ title: "Create result success!" });
-          this.newResultName = null;
-        }),
-          error => {
-            this.$Notice.open({ title: "Create result error!" });
+        api.saveResult(name).then(
+          response=>{
+            this.$Notice.open({ title: "Create result success!" });
             this.newResultName = null;
-          };
-      } else {
-        this.$Notice.open({ title: "Result name is null!" });
+          }
+        ).catch(error=>console.log(error))
       }
     },
     filterShow: function() {
       this.showFilterModal = true;
-      this.$http.get("/ui/plugin/api_coverage/getFilterConf").then(function(data) {
-        if (data.data.code == 3000) {
-          this.$Notice.open({ title: data.data.message });
-        } else {
-          this.filterRules = JSON.stringify(data.data, null, 4)
+      api.loadFilters().then(
+        response=>{
+          if (response.data.code == 3000) {
+            this.$Notice.open({ title: response.data.message });
+          } else {
+            this.filterRules = JSON.stringify(response.data, null, 4)
+          }
         }
-      });
+      ).catch(error => console.log(error))
     },
     editFilterOk: function() {
-      let data = this.filterRules;
-      console.log(data);
-      this.$http
-        .post("/ui/plugin/api_coverage/setFilterConf", data)
-        .then(function(data) {
-          if (data.data.code == 1000) {
+      let data = JSON.parse(this.filterRules);
+      api.setFilters(data).then(
+        response=> {
+          if (response.data.code == 1000) {
             this.$Notice.open({ title: "Set filter success!" });
-          } else if (data.data.code == 3000) {
-            console.log(data);
+          } else if (response.data.code == 3000) {
             this.$Notice.open({
               title: "Set filter error!",
-              desc: data.data.message
+              desc: response.data.message
             });
-          } else {
-            this.$Notice.open({ title: "Set filter error!" });
           }
-        });
+        }
+      ).catch(error => console.log(error))
     },
     popTargetContext: function(targetContext) {
       this.$emit("poptarget", targetContext);

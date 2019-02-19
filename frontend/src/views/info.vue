@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import * as api from '@/api'
+
 export default {
   name: 'BaseInfo',
   props: [],
@@ -19,10 +21,11 @@ export default {
   },
   methods: {
     loadBaseInfo: function() {
-      this.$http.get("/ui/plugin/api_coverage/baseInfo").then(function(data) {
-        console.log(data.data);
-        this.info = data.data;
-      });
+      api.loadBaseInfo().then(
+        response => {
+          this.info = response.data;
+        }
+      ).catch(error=>console.log(error))
     }
   }
 }

@@ -1,37 +1,6 @@
 <template>
   <div> 
     <Table height="1000" stripe :columns="columns" :data="detaildata"></Table>
-    <modal v-model="showAPIDetailModal" title="Data Detail" @on-cancel="showAPIDetailModal=false" width=820>
-        <div class="nav-tabs-custom">
-          <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab_req" data-toggle="tab">Request</a></li>
-              <li><a href="#tab_req_data" data-toggle="tab">RequestData</a></li>
-              <li><a href="#tab_resp" data-toggle="tab">Response</a></li> 
-              <li><a href="#tab_resp_data" data-toggle="tab">ResponseData</a></li>
-          </ul>
-          <div class="tab-content">
-                <div class="tab-pane active pre-scrollable" id="tab_req">
-                  <div name="req" id="data-modal-req" class="form-control" placeholder=""
-                      style="height: 400px; border:0px"></div>
-                </div><!-- /.tab-pane -->
-                <div class="tab-pane pre-scrollable" id="tab_req_data">
-                  <div name="req_data" id="data-modal-req-data" class="form-control" placeholder=""
-                      style="height: 400px; border:0px"></div>
-                </div><!-- /.tab-pane -->
-                <div class="tab-pane pre-scrollable" id="tab_resp">
-                  <div name="resp" id="data-modal-resp" class="form-control" placeholder=""
-                        style="height: 400px; border:0px"></div>
-                </div><!-- /.tab-pane -->
-                <div class="tab-pane pre-scrollable" id="tab_resp_data">
-                  <div name="resp_data" id="data-modal-resp-data" class="form-control" placeholder=""
-                        style="height: 400px; border:0px"></div>
-                </div><!-- /.tab-pane -->
-          </div><!-- /.tab-content -->
-        </div><!-- nav-tabs-custom -->
-      <div slot="footer">
-        <i-button type="primary" size="small" @click="showAPIDetailModal=false">OK</i-button>
-      </div>
-    </modal>
   </div>
     
 </template>
@@ -105,32 +74,6 @@ export default {
               return row.status === 0;
             }
           }
-        },
-        {
-          title: "Detail",
-          key: "id",
-          render: (h, params) => {
-            if (params.row.id) {
-              return h(
-                "i-button",
-                {
-                  props: { size: "small" },
-                  on: {
-                    click: () => {
-                      this.viewDetail(params.row.id);
-                    }
-                  }
-                },
-                "Detail"
-              );
-            } else {
-              return h(
-                "i-button",
-                { props: { size: "small", type: "dashed", disabled: true } },
-                "NotTest"
-              );
-            }
-          }
         }
       ],
       table_data: [],
@@ -139,32 +82,6 @@ export default {
     };
   },
   methods: {
-    viewDetail: function(id) {
-      console.log(id);
-      this.api_id = id;
-      this.showAPIDetailModal = true;
-      this.$http.get("/api/flow/" + id).then(function(data) {
-        console.log(data.data);
-        var req = {
-          url: data.data.request.url,
-          method: data.data.request.method,
-          headers: data.data.request.headers
-        };
-        var resp = {
-          code: data.data.response.code,
-          headers: data.data.response.headers
-        };
-        $("#data-detail-source").html("Data source : " + resp.headers.lyrebird);
-        $("#data-modal-req").JSONView(JSON.stringify(req, null, 4));
-        $("#data-modal-req-data").JSONView(
-          JSON.stringify(data.data.request.data, null, 4)
-        );
-        $("#data-modal-resp").JSONView(JSON.stringify(resp, null, 4));
-        $("#data-modal-resp-data").JSONView(
-          JSON.stringify(data.data.response.data, null, 4)
-        );
-      });
-    }
   }
 }
 </script>

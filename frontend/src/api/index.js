@@ -1,45 +1,47 @@
 import axios from 'axios'
 
+export const loadCoverage = () => {
+    return axios({
+        url: '/ui/plugin/api_coverage/getCoverage'
+    })
+}
+
+export const loadAPIList = () => {
+    return axios({
+        url: '/ui/plugin/api_coverage/getTest'
+    })
+}
+
+export const loadBaseInfo = () => {
+    return axios({
+        url: '/ui/plugin/api_coverage/baseInfo'
+    })
+}
+
 export const clearResult = () => {
     return axios({
-      url: '/ui/plugin/tracking/clear'
+        url: '/ui/plugin/api_coverage/clearResult'
     })
 }
 
-export const saveReport = () => {
+export const loadFilters = () => {
     return axios({
-        url: '/ui/plugin/tracking/report'
+        url: '/ui/plugin/api_coverage/getFilterConf'
     })
 }
 
-export const loadTrackingList = () => {
+export const saveResult = (data) => {
     return axios({
-        url: '/ui/plugin/tracking/result'
-    })
-}
-
-export const viewDetail = (id) => {
-    return axios({
-      url: '/ui/plugin/tracking/content/'+id
-    })
-}
-
-export const loadTrackingBase = () => {
-    return axios({
-        url: '/ui/plugin/tracking/base'
-    })
-}
-
-export const loadGroupList = () => {
-    return axios({
-        url: '/ui/plugin/tracking/group'
-    })
-}
-
-export const createGroupList = (group) => {
-    return axios({
-        url: '/ui/plugin/tracking/select',
+        url: '/ui/plugin/api_coverage/saveResult',
         method: 'POST',
-        data: {group: group}
+        data: {result_name: data}
     })
 } 
+
+export const setFilters = (filters) => {
+    return axios({
+        url: '/ui/plugin/api_coverage/setFilterConf',
+        method: 'POST',
+        data: {filters: filters}
+    })
+}
